@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#c41e3a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Quiz ABA">
+    <title>Quiz Prima Fase | ABA Autoscuole</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --accent: #c41e3a;
+            --accent-hover: #a01830;
+            --accent-light: rgba(196, 30, 58, 0.08);
+            --success: #059669;
+            --success-bg: #ecfdf5;
+            --error: #dc2626;
+            --error-bg: #fef2f2;
+            --white: #ffffff;
+            --gray-50: #fafafa;
+            --gray-100: #f4f4f5;
+            --gray-200: #e4e4e7;
+            --gray-300: #d4d4d8;
+            --gray-400: #a1a1aa;
+            --gray-500: #71717a;
+            --gray-600: #52525b;
+            --gray-700: #3f3f46;
+            --gray-800: #27272a;
+            --gray-900: #18181b;
+            --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+            --radius: 8px;
+            --radius-lg: 12px;
+        }
+        html { height: 100%; -webkit-tap-highlight-color: transparent; }
+        body {
+            min-height: 100%;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--gray-100);
+            color: var(--gray-800);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+        }
+        .app { min-height: 100vh; padding: 20px 16px; display: flex; flex-direction: column; align-items: center; }
+        .container { width: 100%; max-width: 480px; }
+        .header { text-align: center; margin-bottom: 20px; }
+        .header-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--accent); color: var(--white);
+            padding: 8px 14px; border-radius: var(--radius);
+            font-size: 12px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+        .header-badge svg { width: 16px; height: 16px; }
+        .logo-aba { text-align: center; margin-bottom: 16px; }
+        .logo-text {
+            font-size: 2.5rem; font-weight: 900; letter-spacing: -2px;
+            color: var(--gray-900); font-family: 'Arial Black', Arial, sans-serif;
+            line-height: 1; position: relative; display: inline-block;
+        }
+        .logo-bar {
+            position: absolute; bottom: 0.5rem; left: -10%; right: -10%;
+            height: 0.35rem; background: var(--accent); transform: skew(-15deg); z-index: -1;
+        }
+        .logo-subtitle {
+            font-size: 0.9rem; font-weight: 300; letter-spacing: 0.25rem;
+            color: var(--gray-900); margin-top: -0.3rem;
+        }
+        .header-title { color: var(--gray-900); font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+        .header-subtitle { color: var(--gray-500); font-size: 13px; }
+        .card { background: var(--white); border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow); border: 1px solid var(--gray-200); }
+        .hidden { display: none !important; }
+        .section-title { font-size: 11px; font-weight: 600; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+        .mode-toggle { display: flex; gap: 6px; margin-bottom: 20px; background: var(--gray-100); padding: 4px; border-radius: var(--radius); }
+        .mode-btn {
+            flex: 1; background: transparent; border: none; border-radius: 6px;
+            padding: 10px 8px; cursor: pointer; font-family: inherit;
+            font-size: 13px; font-weight: 500; color: var(--gray-600); transition: all 0.15s;
+        }
+        .mode-btn.selected { background: var(--white); color: var(--gray-900); box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+        .categories-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .categories-header .section-title { margin: 0; }
+        .select-all-btn { background: none; border: none; color: var(--accent); font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; }
+        .category-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
+        .category-btn { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 12px 10px; cursor: pointer; text-align: left; transition: all 0.15s; }
+        .category-btn.selected { border-color: var(--accent); background: var(--accent-light); }
+        .category-name { display: block; font-size: 13px; font-weight: 600; color: var(--gray-800); margin-bottom: 2px; }
+        .category-count { font-size: 11px; color: var(--gray-400); }
+        .btn-primary { width: 100%; background: var(--accent); color: var(--white); border: none; border-radius: var(--radius); padding: 14px 20px; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.15s; }
+        .btn-primary:hover { background: var(--accent-hover); }
+        .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+        .btn-secondary { width: 100%; background: var(--white); color: var(--gray-700); border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 14px 20px; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+        .btn-secondary:hover { border-color: var(--gray-300); background: var(--gray-50); }
+        .btn-dark { width: 100%; background: var(--gray-900); color: var(--white); border: none; border-radius: var(--radius); padding: 14px 20px; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+        .btn-text { width: 100%; background: transparent; color: var(--gray-500); border: none; padding: 10px; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; }
+        .progress-bar { height: 4px; background: var(--gray-200); border-radius: 2px; margin-bottom: 16px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--accent); transition: width 0.3s; }
+        .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--gray-100); }
+        .quiz-counter { font-size: 14px; font-weight: 600; color: var(--gray-700); }
+        .quiz-stats { display: flex; gap: 10px; font-size: 13px; font-weight: 500; }
+        .stat-correct { color: var(--success); }
+        .stat-wrong { color: var(--error); }
+        .timer { font-size: 14px; font-weight: 600; color: var(--gray-700); padding: 6px 10px; background: var(--gray-100); border-radius: 6px; }
+        .timer.warning { color: var(--error); background: var(--error-bg); }
+        .question-category { display: inline-block; font-size: 10px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+        .question-text { font-size: 16px; font-weight: 600; color: var(--gray-900); line-height: 1.5; margin-bottom: 20px; }
+        .answers-list { display: flex; flex-direction: column; gap: 8px; }
+        .answer-btn { width: 100%; background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 12px 14px; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 10px; font-family: inherit; font-size: 14px; color: var(--gray-700); transition: all 0.15s; }
+        .answer-btn:active { background: var(--gray-50); }
+        .answer-btn.correct { border-color: var(--success); background: var(--success-bg); color: var(--success); }
+        .answer-btn.wrong { border-color: var(--error); background: var(--error-bg); color: var(--error); }
+        .answer-btn:disabled { cursor: default; }
+        .answer-letter { width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; background: var(--gray-100); border-radius: 6px; font-size: 12px; font-weight: 600; color: var(--gray-600); flex-shrink: 0; }
+        .answer-btn.correct .answer-letter { background: var(--success); color: var(--white); }
+        .answer-btn.wrong .answer-letter { background: var(--error); color: var(--white); }
+        .feedback-box { margin-top: 16px; padding: 14px; border-radius: var(--radius); font-size: 13px; line-height: 1.5; }
+        .feedback-box.correct { background: var(--success-bg); border: 1px solid rgba(5, 150, 105, 0.2); }
+        .feedback-box.wrong { background: var(--error-bg); border: 1px solid rgba(220, 38, 38, 0.2); }
+        .feedback-title { font-weight: 600; margin-bottom: 4px; }
+        .feedback-box.correct .feedback-title { color: var(--success); }
+        .feedback-box.wrong .feedback-title { color: var(--error); }
+        .feedback-text { color: var(--gray-600); }
+        .quiz-actions { margin-top: 14px; display: flex; flex-direction: column; gap: 6px; }
+        .results-header { text-align: center; padding-bottom: 20px; border-bottom: 1px solid var(--gray-100); margin-bottom: 20px; }
+        .results-icon { width: 52px; height: 52px; margin: 0 auto 14px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .results-icon.pass { background: var(--success-bg); color: var(--success); }
+        .results-icon.fail { background: var(--error-bg); color: var(--error); }
+        .results-icon svg { width: 26px; height: 26px; }
+        .results-title { font-size: 18px; font-weight: 700; color: var(--gray-900); margin-bottom: 4px; }
+        .results-subtitle { font-size: 14px; color: var(--gray-500); }
+        .score-display { text-align: center; margin-bottom: 20px; }
+        .score-number { font-size: 44px; font-weight: 700; color: var(--gray-900); line-height: 1; }
+        .score-label { font-size: 13px; color: var(--gray-500); margin-top: 4px; }
+        .stats-row { display: flex; gap: 8px; margin-bottom: 20px; }
+        .stat-box { flex: 1; text-align: center; padding: 14px 10px; background: var(--gray-50); border-radius: var(--radius); }
+        .stat-value { font-size: 22px; font-weight: 700; margin-bottom: 2px; }
+        .stat-value.correct { color: var(--success); }
+        .stat-value.wrong { color: var(--error); }
+        .stat-value.skipped { color: var(--gray-400); }
+        .stat-label { font-size: 11px; color: var(--gray-500); font-weight: 500; }
+        .results-actions { display: flex; flex-direction: column; gap: 8px; }
+        .review-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--gray-100); }
+        .back-btn { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; background: var(--gray-100); border: none; border-radius: var(--radius); cursor: pointer; font-size: 16px; color: var(--gray-600); }
+        .review-title { font-size: 15px; font-weight: 600; color: var(--gray-900); }
+        .review-list { display: flex; flex-direction: column; gap: 12px; max-height: 50vh; overflow-y: auto; }
+        .review-item { padding: 14px; background: var(--gray-50); border-radius: var(--radius); border-left: 3px solid var(--error); }
+        .review-question { font-size: 13px; font-weight: 600; color: var(--gray-800); margin-bottom: 10px; line-height: 1.5; }
+        .review-answer { font-size: 12px; padding: 8px 10px; border-radius: 6px; margin-bottom: 4px; }
+        .review-answer:last-child { margin-bottom: 0; }
+        .review-answer.user-wrong { background: var(--error-bg); color: var(--error); }
+        .review-answer.correct-answer { background: var(--success-bg); color: var(--success); }
+        .footer { margin-top: 24px; text-align: center; font-size: 12px; color: var(--gray-400); }
+        .footer a { color: var(--gray-500); text-decoration: none; font-weight: 500; }
+        @media (max-width: 380px) {
+            .app { padding: 16px 12px; }
+            .card { padding: 16px; }
+            .header-title { font-size: 20px; }
+            .question-text { font-size: 15px; }
+            .category-grid { gap: 6px; }
+            .category-btn { padding: 10px 8px; }
+            .category-name { font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <div class="container">
+            <header class="header">
+                <div class="logo-aba">
+                    <div class="logo-text">
+                        ABA
+                        <div class="logo-bar"></div>
+                    </div>
+                    <div class="logo-subtitle">AUTOSCUOLE</div>
+                </div>
+                <h1 class="header-title">Quiz Prima Fase</h1>
+                <p class="header-subtitle">Domande orali esame pratico — Vicenza</p>
+            </header>
+
+            <div id="homeScreen" class="card">
+                <div class="section-title">Modalità</div>
+                <div class="mode-toggle">
+                    <button class="mode-btn selected" data-mode="practice">Pratica</button>
+                    <button class="mode-btn" data-mode="exam">Simulazione (10)</button>
+                </div>
+                <div class="categories-header">
+                    <div class="section-title">Argomenti</div>
+                    <button class="select-all-btn" id="selectAllBtn">Seleziona tutto</button>
+                </div>
+                <div class="category-grid" id="categoryGrid"></div>
+                <button class="btn-primary" id="startBtn" disabled>Inizia Quiz</button>
+            </div>
+
+            <div id="quizScreen" class="card hidden">
+                <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+                <div class="quiz-header">
+                    <span class="quiz-counter" id="quizCounter">1 / 10</span>
+                    <div id="quizHeaderRight">
+                        <div class="quiz-stats" id="quizStats">
+                            <span class="stat-correct" id="correctCount">0 ✓</span>
+                            <span class="stat-wrong" id="wrongCount">0 ✗</span>
+                        </div>
+                        <div class="timer hidden" id="timer">10:00</div>
+                    </div>
+                </div>
+                <div class="question-category" id="questionCategory"></div>
+                <h2 class="question-text" id="questionText"></h2>
+                <div class="answers-list" id="answersList"></div>
+                <div class="feedback-box hidden" id="feedbackBox">
+                    <div class="feedback-title" id="feedbackTitle"></div>
+                    <div class="feedback-text" id="feedbackText"></div>
+                </div>
+                <div class="quiz-actions">
+                    <button class="btn-dark hidden" id="nextBtn">Prossima domanda</button>
+                    <button class="btn-text" id="skipBtn">Salta domanda</button>
+                </div>
+            </div>
+
+            <div id="resultsScreen" class="card hidden">
+                <div class="results-header">
+                    <div class="results-icon" id="resultsIcon">
+                        <svg id="iconCheck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        <svg id="iconX" class="hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </div>
+                    <h2 class="results-title" id="resultsTitle">Ottimo risultato</h2>
+                    <p class="results-subtitle" id="resultsSubtitle">Continua così</p>
+                </div>
+                <div class="score-display">
+                    <div class="score-number" id="scoreNumber">85%</div>
+                    <div class="score-label" id="scoreLabel">8 risposte corrette su 10</div>
+                </div>
+                <div class="stats-row">
+                    <div class="stat-box"><div class="stat-value correct" id="finalCorrect">8</div><div class="stat-label">Corrette</div></div>
+                    <div class="stat-box"><div class="stat-value wrong" id="finalWrong">2</div><div class="stat-label">Errate</div></div>
+                    <div class="stat-box"><div class="stat-value skipped" id="finalSkipped">0</div><div class="stat-label">Saltate</div></div>
+                </div>
+                <div class="results-actions">
+                    <button class="btn-secondary" id="reviewBtn">Rivedi errori</button>
+                    <button class="btn-primary" id="newQuizBtn">Nuovo quiz</button>
+                </div>
+            </div>
+
+            <div id="reviewScreen" class="card hidden">
+                <div class="review-header">
+                    <button class="back-btn" id="backToResultsBtn">←</button>
+                    <h2 class="review-title" id="reviewTitle">Domande errate</h2>
+                </div>
+                <div class="review-list" id="reviewList"></div>
+                <button class="btn-primary" id="backFromReviewBtn" style="margin-top: 16px;">← Torna ai risultati</button>
+            </div>
+
+            <footer class="footer">
+                <a href="https://www.autoscuoleaba.it" target="_blank" rel="noopener">Autoscuola ABA</a> • Bassano & Cartigliano
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        const QUESTIONS = [
+            // COFANO E LIQUIDI (8 domande)
+            { id: 1, category: 'cofano', question: 'Come si apre il cofano motore?', answers: ['Leva interna + sicura esterna da sbloccare', 'Solo con la chiave dell\'auto', 'Pulsante sul cruscotto'], correct: 0, explanation: 'Il cofano si apre con la leva interna (di solito sotto il cruscotto lato guida), poi va sbloccata la sicura esterna alzando la levetta sotto il cofano.' },
+            { id: 2, category: 'cofano', question: 'Come si controlla il livello dell\'olio motore?', answers: ['Astina: estrarre, pulire, reinserire, estrarre e leggere', 'Guardare la spia sul cruscotto', 'Controllare il tappo dell\'olio'], correct: 0, explanation: 'Si estrae l\'astina, si pulisce con un panno, si reinserisce completamente, si estrae di nuovo e si legge il livello che deve essere tra MIN e MAX.' },
+            { id: 3, category: 'cofano', question: 'Quando va controllato il livello dell\'olio?', answers: ['A motore freddo e auto in piano', 'A motore caldo dopo aver guidato', 'Non importa, basta che sia spento'], correct: 0, explanation: 'Il controllo va fatto a motore freddo (o dopo almeno 10 minuti di sosta) con l\'auto in piano per avere una lettura corretta.' },
+            { id: 4, category: 'cofano', question: 'Dove si rabbocca l\'olio motore?', answers: ['Dal tappo con il simbolo dell\'olio sul motore', 'Dallo stesso punto dell\'astina', 'Dal serbatoio del liquido freni'], correct: 0, explanation: 'L\'olio si aggiunge dal tappo di rabbocco che ha il simbolo dell\'olio, diverso dal punto dove si trova l\'astina di controllo.' },
+            { id: 5, category: 'cofano', question: 'Il livello del liquido di raffreddamento dove deve essere?', answers: ['Tra MIN e MAX, preferibilmente al MAX', 'Basta che sia sopra il MIN', 'Sempre pieno fino all\'orlo'], correct: 0, explanation: 'Il livello deve essere tra MIN e MAX. All\'esame spesso chiedono che arrivi fino al MAX, non basta che sia "dentro il range".' },
+            { id: 6, category: 'cofano', question: 'Quando si controlla il liquido di raffreddamento?', answers: ['Sempre a motore freddo', 'Solo a motore caldo', 'Indifferente'], correct: 0, explanation: 'Va controllato SEMPRE a motore freddo. A motore caldo il liquido è in pressione e aprire il tappo può causare ustioni.' },
+            { id: 7, category: 'cofano', question: 'Dove si trova il serbatoio del liquido freni?', answers: ['Sopra il cilindro maestro, vicino al parabrezza', 'Vicino al radiatore', 'Nel bagagliaio'], correct: 0, explanation: 'Il serbatoio del liquido freni è posizionato sopra il cilindro maestro, di solito nella parte posteriore del vano motore vicino al parabrezza.' },
+            { id: 8, category: 'cofano', question: 'Il liquido lavavetri fino a che livello può essere riempito?', answers: ['Fino all\'orlo del serbatoio', 'Solo fino alla tacca MAX', 'A metà serbatoio'], correct: 0, explanation: 'A differenza degli altri liquidi, il lavavetri può essere riempito fino all\'orlo senza problemi.' },
+            
+            // PNEUMATICI (8 domande)
+            { id: 9, category: 'pneumatici', question: 'Dove trovi la pressione consigliata degli pneumatici?', answers: ['Sul montante della porta lato guida', 'Sul fianco dello pneumatico', 'Solo sul libretto'], correct: 0, explanation: 'La targhetta con le pressioni consigliate si trova sul montante della porta lato guida. Sul fianco c\'è la pressione massima, non quella consigliata.' },
+            { id: 10, category: 'pneumatici', question: 'Cosa sono gli indicatori TWI sullo pneumatico?', answers: ['Indicatori di usura del battistrada', 'Il codice del produttore', 'La data di produzione'], correct: 0, explanation: 'TWI (Tread Wear Indicator) indica la posizione degli indicatori di usura. Quando il battistrada è a livello del TWI, lo pneumatico va sostituito.' },
+            { id: 11, category: 'pneumatici', question: 'Qual è lo spessore minimo legale del battistrada?', answers: ['1,6 mm', '3 mm', '1 mm'], correct: 0, explanation: 'Il limite legale è 1,6 mm. Per sicurezza si consiglia la sostituzione già a 3 mm, specialmente per l\'uso invernale.' },
+            { id: 12, category: 'pneumatici', question: 'Dove trovi le misure degli pneumatici omologati per la tua auto?', answers: ['Nella carta di circolazione (libretto)', 'Solo sullo pneumatico montato', 'Sul parabrezza'], correct: 0, explanation: 'Le misure degli pneumatici omologati sono riportate nella carta di circolazione. Puoi montare solo misure indicate nel libretto.' },
+            { id: 13, category: 'pneumatici', question: 'Come verifichi visivamente lo stato degli pneumatici?', answers: ['Usura, pressione a vista, tagli, oggetti conficcati', 'Solo la pressione', 'Solo guardando il battistrada'], correct: 0, explanation: 'Bisogna controllare: usura del battistrada, pressione visiva, presenza di tagli, rigonfiamenti, oggetti conficcati nel battistrada.' },
+            { id: 14, category: 'pneumatici', question: 'Cosa indica il numero "205" nella sigla 205/55 R16?', answers: ['Larghezza dello pneumatico in mm', 'Altezza del fianco', 'Diametro del cerchio'], correct: 0, explanation: 'Il primo numero (205) indica la larghezza dello pneumatico in millimetri.' },
+            { id: 15, category: 'pneumatici', question: 'Cosa indica "R16" nella sigla dello pneumatico?', answers: ['Diametro del cerchio in pollici', 'Raggio dello pneumatico', 'Rapporto di aspetto'], correct: 0, explanation: 'R indica la costruzione radiale, 16 è il diametro del cerchio in pollici su cui va montato lo pneumatico.' },
+            { id: 16, category: 'pneumatici', question: 'Quando sono obbligatori gli pneumatici invernali o le catene a bordo?', answers: ['Dal 15 novembre al 15 aprile dove indicato', 'Solo quando nevica', 'Tutto l\'anno in montagna'], correct: 0, explanation: 'L\'obbligo vige dal 15 novembre al 15 aprile nelle tratte indicate da ordinanze. In alternativa si possono avere catene a bordo.' },
+            
+            // LUCI E SPIE (8 domande)
+            { id: 17, category: 'luci', question: 'Quando si usano gli anabbaglianti?', answers: ['Sempre fuori dai centri abitati, di notte in città', 'Solo di notte', 'Solo in autostrada'], correct: 0, explanation: 'Gli anabbaglianti sono obbligatori fuori dai centri abitati sia di giorno che di notte. Nei centri abitati solo di notte (da mezz\'ora dopo il tramonto a mezz\'ora prima dell\'alba).' },
+            { id: 18, category: 'luci', question: 'Quando puoi usare gli abbaglianti?', answers: ['Solo fuori città, di notte, senza altri veicoli da abbagliare', 'Sempre di notte', 'Mai, sono vietati'], correct: 0, explanation: 'Gli abbaglianti si usano solo fuori dai centri abitati, di notte, quando l\'illuminazione è insufficiente e non ci sono altri utenti che potrebbero essere abbagliati.' },
+            { id: 19, category: 'luci', question: 'Quando si usano i fendinebbia?', answers: ['Con visibilità sotto i 50 metri (nebbia, pioggia o neve intensa)', 'Solo con la nebbia', 'Sempre di notte'], correct: 0, explanation: 'I fendinebbia si attivano quando la visibilità scende sotto i 50 metri, non solo per nebbia ma anche in caso di pioggia o neve molto intensa.' },
+            { id: 20, category: 'luci', question: 'Di che colore è la luce di retromarcia?', answers: ['Bianca', 'Rossa', 'Gialla'], correct: 0, explanation: 'La luce di retromarcia è sempre bianca, per distinguersi dalle altre luci posteriori.' },
+            { id: 21, category: 'luci', question: 'Di che colore sono le luci di posizione posteriori?', answers: ['Rosso', 'Bianco', 'Arancione'], correct: 0, explanation: 'Le luci di posizione posteriori sono rosse. I freni e fendinebbia posteriore sono rosso più intenso.' },
+            { id: 22, category: 'luci', question: 'Cosa indica una spia ROSSA accesa sul cruscotto?', answers: ['Pericolo o problema grave: fermarsi', 'Funzione attiva, tutto ok', 'Controllo consigliato'], correct: 0, explanation: 'Le spie rosse indicano pericolo o problema grave che richiede di fermarsi. Non si deve proseguire con spie rosse accese.' },
+            { id: 23, category: 'luci', question: 'Cosa indica una spia GIALLA/ARANCIONE sul cruscotto?', answers: ['Attenzione: controllo necessario ma non urgente', 'Pericolo immediato', 'Funzione attiva normale'], correct: 0, explanation: 'Le spie gialle/arancioni indicano che qualcosa richiede attenzione o un controllo, ma non è un\'emergenza immediata come le rosse.' },
+            { id: 24, category: 'luci', question: 'Come si accendono le luci di emergenza (4 frecce)?', answers: ['Pulsante con triangolo rosso sul cruscotto', 'Leva delle frecce in posizione centrale', 'Si accendono da sole'], correct: 0, explanation: 'Le luci di emergenza si attivano con il pulsante con il simbolo del triangolo rosso, di solito al centro della plancia.' },
+            
+            // COMANDI ABITACOLO (8 domande)
+            { id: 25, category: 'comandi', question: 'Come si attiva lo sbrinamento del lunotto posteriore?', answers: ['Pulsante con simbolo rettangolo con linee ondulate', 'Si attiva automaticamente', 'Con il climatizzatore'], correct: 0, explanation: 'Lo sbrinamento del lunotto si attiva con il pulsante che ha il simbolo di un rettangolo con linee ondulate (la resistenza elettrica).' },
+            { id: 26, category: 'comandi', question: 'Cosa fare se i vetri si appannano durante la guida?', answers: ['Sbrinatore + aria calda, NO ricircolo', 'Solo alzare il riscaldamento', 'Aprire i finestrini'], correct: 0, explanation: 'Per disappannare: attivare lo sbrinatore, aria calda sul parabrezza e DISATTIVARE il ricircolo per far entrare aria esterna.' },
+            { id: 27, category: 'comandi', question: 'Cos\'è il ricircolo dell\'aria e quando NON va usato?', answers: ['Ricircola aria interna; non usare con vetri appannati', 'Filtra l\'aria esterna; sempre attivo', 'Raffredda l\'aria; solo d\'estate'], correct: 0, explanation: 'Il ricircolo fa circolare l\'aria già presente nell\'abitacolo. Non va usato con vetri appannati perché peggiora la situazione.' },
+            { id: 28, category: 'comandi', question: 'Dove si trova il comando del tergilunotto posteriore?', answers: ['Sulla leva dei tergicristalli (spingere o ruotare)', 'Pulsante separato sul cruscotto', 'Non tutte le auto ce l\'hanno'], correct: 0, explanation: 'Di solito il tergilunotto si comanda dalla stessa leva dei tergicristalli anteriori, spingendola o ruotando un anello.' },
+            { id: 29, category: 'comandi', question: 'Come si testa il clacson prima della partenza?', answers: ['Un colpo deciso al centro del volante', 'Premere a lungo per 5 secondi', 'Non va testato'], correct: 0, explanation: 'Prima di partire si verifica il funzionamento del clacson con un colpo breve e deciso.' },
+            { id: 30, category: 'comandi', question: 'Prima di avviare, i tergicristalli come vanno testati?', answers: ['Alla massima velocità, SENZA lavavetri', 'Alla minima velocità con lavavetri', 'Non vanno testati'], correct: 0, explanation: 'I tergicristalli vanno testati alla massima velocità ma SENZA attivare il lavavetri durante il test all\'esame.' },
+            { id: 31, category: 'comandi', question: 'Come funziona la chiusura centralizzata?', answers: ['Blocca/sblocca tutte le porte contemporaneamente', 'Chiude solo le porte anteriori', 'Funziona solo con il motore acceso'], correct: 0, explanation: 'La chiusura centralizzata permette di bloccare o sbloccare tutte le porte e il bagagliaio contemporaneamente.' },
+            { id: 32, category: 'comandi', question: 'Dove si vede il livello del carburante?', answers: ['Indicatore sul cruscotto con simbolo pompa', 'Solo aprendo il tappo', 'Dal computer di bordo'], correct: 0, explanation: 'Il livello carburante si legge dall\'indicatore sul cruscotto, che ha il simbolo della pompa di benzina.' },
+            
+            // POSIZIONE DI GUIDA (6 domande)
+            { id: 33, category: 'posizione', question: 'Come si regola correttamente il sedile?', answers: ['Distanza pedali: gamba leggermente flessa a frizione premuta', 'Gambe completamente tese', 'Più vicino possibile al volante'], correct: 0, explanation: 'La distanza giusta permette di premere a fondo la frizione mantenendo la gamba leggermente flessa, non completamente tesa.' },
+            { id: 34, category: 'posizione', question: 'Come vanno regolati gli specchietti retrovisori esterni?', answers: ['1/3 veicolo visibile, 2/3 strada', '2/3 veicolo, 1/3 strada', 'Solo la strada, niente veicolo'], correct: 0, explanation: 'Negli specchietti esterni deve essere visibile circa 1/3 della fiancata del veicolo e 2/3 della strada dietro.' },
+            { id: 35, category: 'posizione', question: 'A che altezza va regolato il volante?', answers: ['Sguardo a metà tra parasole abbassato e cruscotto', 'Il più alto possibile', 'Il più basso possibile'], correct: 0, explanation: 'Il volante va regolato in modo che lo sguardo passi a metà tra l\'aletta parasole completamente aperta e il bordo superiore del cruscotto.' },
+            { id: 36, category: 'posizione', question: 'Qual è la sequenza corretta di regolazione prima di partire?', answers: ['Sedile → specchietti → cintura → controllo cambio/freno', 'Cintura → sedile → specchietti', 'Specchietti → sedile → cintura'], correct: 0, explanation: 'Prima si regola il sedile (base per tutto), poi gli specchietti, poi si allaccia la cintura e si verifica cambio in folle e freno a mano.' },
+            { id: 37, category: 'posizione', question: 'Come deve essere regolato il poggiatesta?', answers: ['Centro del poggiatesta all\'altezza degli occhi', 'Il più in alto possibile', 'All\'altezza del collo'], correct: 0, explanation: 'Il centro del poggiatesta deve essere circa all\'altezza degli occhi per proteggere efficacemente dal colpo di frusta.' },
+            { id: 38, category: 'posizione', question: 'Cosa si controlla dopo aver regolato tutto e prima di avviare?', answers: ['Spie cruscotto con chiave in MAR', 'Subito il motore', 'I fari'], correct: 0, explanation: 'Con la chiave in MAR (senza avviare) si controllano le spie del cruscotto. Tutte le spie rosse devono spegnersi dopo l\'avviamento.' },
+            
+            // SICUREZZA E DOTAZIONI (8 domande)
+            { id: 39, category: 'sicurezza', question: 'Dove DEVE essere tenuto il giubbotto catarifrangente?', answers: ['Nell\'abitacolo, a portata di mano', 'Nel bagagliaio', 'Sotto il sedile posteriore'], correct: 0, explanation: 'Il giubbotto DEVE essere nell\'abitacolo (non nel bagagliaio) per poterlo indossare PRIMA di scendere dall\'auto in caso di emergenza.' },
+            { id: 40, category: 'sicurezza', question: 'A che distanza va posizionato il triangolo fuori dai centri abitati?', answers: ['Almeno 50 metri dietro il veicolo', '10 metri', '100 metri sempre'], correct: 0, explanation: 'Fuori dai centri abitati il triangolo va posto ad almeno 50 metri. In autostrada ad almeno 100 metri.' },
+            { id: 41, category: 'sicurezza', question: 'Come funziona la sicura bambini sulle porte posteriori?', answers: ['Levetta sulla porta che impedisce apertura dall\'interno', 'Pulsante sul cruscotto', 'Si attiva automaticamente'], correct: 0, explanation: 'La sicura bambini è una levetta sul bordo delle porte posteriori. Quando attivata, la porta non si apre dall\'interno ma solo dall\'esterno.' },
+            { id: 42, category: 'sicurezza', question: 'Come si verifica che la sicura bambini funzioni?', answers: ['Salire dietro e provare ad aprire dall\'interno', 'Guardare la spia sul cruscotto', 'Basta vedere la levetta'], correct: 0, explanation: 'La verifica pratica richiede di salire nei sedili posteriori e provare ad aprire le porte dall\'interno: devono rimanere bloccate.' },
+            { id: 43, category: 'sicurezza', question: 'Perché l\'istruttore può non allacciare la cintura ma l\'esaminatore deve?', answers: ['L\'istruttore ha i doppi comandi, l\'esaminatore no', 'L\'istruttore è più esperto', 'Non c\'è differenza'], correct: 0, explanation: 'L\'istruttore con doppi comandi è esentato dall\'obbligo di cintura per poter intervenire rapidamente. L\'esaminatore non ha i doppi comandi quindi deve allacciarla.' },
+            { id: 44, category: 'sicurezza', question: 'Dove si trovano gli airbag principali?', answers: ['Nel volante e nel cruscotto lato passeggero', 'Solo nel volante', 'Sotto i sedili'], correct: 0, explanation: 'Gli airbag frontali principali sono nel volante (lato guida) e nel cruscotto (lato passeggero). Possono essercene anche laterali e a tendina.' },
+            { id: 45, category: 'sicurezza', question: 'Dov\'è la ruota di scorta?', answers: ['Nel bagagliaio, sotto il pianale o esterna sotto il veicolo', 'Nel cofano motore', 'Non tutte le auto ce l\'hanno'], correct: 0, explanation: 'La ruota di scorta di solito è nel bagagliaio sotto il pianale, o fissata esternamente sotto il veicolo. Alcune auto hanno solo il kit di gonfiaggio.' },
+            { id: 46, category: 'sicurezza', question: 'Se l\'auto non ha ruota di scorta, cosa deve avere?', answers: ['Kit di gonfiaggio pneumatici', 'Due ruote anteriori in più', 'Niente, è opzionale'], correct: 0, explanation: 'Se non c\'è la ruota di scorta, l\'auto deve avere il kit di gonfiaggio (bomboletta + compressore) per riparazioni temporanee.' },
+            
+            // DOCUMENTI (6 domande)
+            { id: 47, category: 'documenti', question: 'Quali documenti servono per circolare?', answers: ['Patente, carta di circolazione, assicurazione', 'Solo la patente', 'Patente e carta d\'identità'], correct: 0, explanation: 'Per circolare servono: patente di guida, carta di circolazione (libretto) e certificato di assicurazione valido.' },
+            { id: 48, category: 'documenti', question: 'Dove si vede se la revisione è in regola?', answers: ['Nella carta di circolazione (o tagliando sul parabrezza)', 'Solo dal meccanico', 'Sul cruscotto'], correct: 0, explanation: 'La data dell\'ultima revisione e la scadenza si trovano sulla carta di circolazione. Può esserci anche un tagliando sul parabrezza.' },
+            { id: 49, category: 'documenti', question: 'Che differenza c\'è tra tagliando e revisione?', answers: ['Tagliando: manutenzione. Revisione: controllo obbligatorio di legge', 'Sono la stessa cosa', 'Il tagliando è obbligatorio, la revisione no'], correct: 0, explanation: 'Il tagliando è la manutenzione programmata dal costruttore. La revisione è il controllo obbligatorio di legge per verificare sicurezza e emissioni.' },
+            { id: 50, category: 'documenti', question: 'Dove trovi quante persone può trasportare il veicolo?', answers: ['Nella carta di circolazione', 'Sul parabrezza', 'Sul volante'], correct: 0, explanation: 'Il numero massimo di persone trasportabili è indicato nella carta di circolazione del veicolo.' },
+            { id: 51, category: 'documenti', question: 'Un neopatentato può guidare qualsiasi auto?', answers: ['No, ci sono limiti di potenza per i primi 3 anni', 'Sì, con qualsiasi patente B', 'Solo auto diesel'], correct: 0, explanation: 'I neopatentati per i primi 3 anni non possono guidare auto con rapporto potenza/peso superiore a 55 kW/t e comunque non oltre 70 kW (95 CV).' },
+            { id: 52, category: 'documenti', question: 'Dove verifichi se l\'auto dell\'esame è guidabile da un neopatentato?', answers: ['Nella carta di circolazione (potenza kW)', 'Chiedendo all\'istruttore', 'Dal colore della targa'], correct: 0, explanation: 'Sulla carta di circolazione è indicata la potenza in kW. Per i neopatentati il limite è 70 kW (95 CV) e rapporto potenza/peso max 55 kW/t.' },
+            
+            // EMERGENZE (8 domande)
+            { id: 53, category: 'emergenze', question: 'Qual è la prima cosa da fare in caso di foratura o guasto?', answers: ['Accendere le 4 frecce', 'Scendere subito dall\'auto', 'Chiamare il soccorso'], correct: 0, explanation: 'La prima cosa è sempre accendere le luci di emergenza (4 frecce) per segnalare agli altri veicoli.' },
+            { id: 54, category: 'emergenze', question: 'Qual è la procedura corretta in caso di guasto fuori città?', answers: ['4 frecce → giubbotto → triangolo → freno a mano → marcia', 'Scendere e chiamare aiuto', 'Aspettare in auto'], correct: 0, explanation: 'Procedura: 1) Accendere 4 frecce, 2) Indossare giubbotto PRIMA di scendere, 3) Posizionare triangolo a 50m, 4) Freno a mano, 5) Marcia inserita.' },
+            { id: 55, category: 'emergenze', question: 'In caso di sosta forzata, che marcia va lasciata inserita?', answers: ['Prima in piano/salita, retromarcia in discesa', 'Sempre in folle', 'Sempre la prima'], correct: 0, explanation: 'In piano o salita si lascia la prima marcia. In discesa si lascia la retromarcia. Questo impedisce al veicolo di muoversi.' },
+            { id: 56, category: 'emergenze', question: 'Dove devono andare i passeggeri in caso di guasto in autostrada?', answers: ['Oltre il guard-rail, lontano dalla carreggiata', 'Restare in auto', 'Dietro il triangolo'], correct: 0, explanation: 'I passeggeri devono scendere dal lato destro e posizionarsi oltre il guard-rail, il più lontano possibile dalla carreggiata.' },
+            { id: 57, category: 'emergenze', question: 'A che distanza va messo il triangolo in autostrada?', answers: ['Almeno 100 metri dietro il veicolo', '50 metri', '20 metri'], correct: 0, explanation: 'In autostrada il triangolo va posizionato ad almeno 100 metri dietro il veicolo (il doppio rispetto alle altre strade).' },
+            { id: 58, category: 'emergenze', question: 'Cosa fare se si accende la spia rossa dell\'olio durante la marcia?', answers: ['Fermarsi immediatamente e spegnere il motore', 'Continuare fino al distributore più vicino', 'Controllare alla prossima sosta'], correct: 0, explanation: 'La spia rossa dell\'olio indica pressione insufficiente: bisogna fermarsi SUBITO e spegnere il motore. Continuare può causare danni gravissimi.' },
+            { id: 59, category: 'emergenze', question: 'Cosa fare se si accende la spia rossa della temperatura?', answers: ['Fermarsi, spegnere e lasciar raffreddare', 'Accendere il riscaldamento al massimo', 'Aggiungere subito acqua'], correct: 0, explanation: 'Con la spia temperatura accesa: fermarsi immediatamente, spegnere il motore, attendere che si raffreddi. MAI aprire il tappo del radiatore a caldo.' },
+            { id: 60, category: 'emergenze', question: 'Quando va indossato il giubbotto catarifrangente?', answers: ['PRIMA di scendere dall\'auto', 'Dopo aver posizionato il triangolo', 'Solo di notte'], correct: 0, explanation: 'Il giubbotto va indossato PRIMA di scendere dall\'auto, ancora seduti nell\'abitacolo. Per questo deve essere a portata di mano, non nel bagagliaio.' }
+        ];
+
+        const CATEGORIES = [
+            { id: 'cofano', name: 'Cofano e liquidi' },
+            { id: 'pneumatici', name: 'Pneumatici' },
+            { id: 'luci', name: 'Luci e spie' },
+            { id: 'comandi', name: 'Comandi abitacolo' },
+            { id: 'posizione', name: 'Posizione guida' },
+            { id: 'sicurezza', name: 'Sicurezza' },
+            { id: 'documenti', name: 'Documenti' },
+            { id: 'emergenze', name: 'Emergenze' }
+        ];
+
+        CATEGORIES.forEach(cat => { cat.count = QUESTIONS.filter(q => q.category === cat.id).length; });
+
+        let state = { screen: 'home', mode: 'practice', selectedCategories: [], questions: [], currentIndex: 0, answers: [], showFeedback: false, correctCount: 0, wrongCount: 0, timeLeft: 600, timerInterval: null };
+        const $ = id => document.getElementById(id);
+        const screens = { home: $('homeScreen'), quiz: $('quizScreen'), results: $('resultsScreen'), review: $('reviewScreen') };
+
+        function shuffle(array) { const arr = [...array]; for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; } return arr; }
+        function showScreen(name) { Object.values(screens).forEach(s => s.classList.add('hidden')); screens[name].classList.remove('hidden'); state.screen = name; }
+        function getCategoryName(id) { return CATEGORIES.find(c => c.id === id)?.name || id; }
+
+        function initCategories() {
+            const grid = $('categoryGrid');
+            grid.innerHTML = CATEGORIES.map(cat => `<button class="category-btn" data-id="${cat.id}"><span class="category-name">${cat.name}</span><span class="category-count">${cat.count} domande</span></button>`).join('');
+            grid.addEventListener('click', e => {
+                const btn = e.target.closest('.category-btn'); if (!btn) return;
+                const id = btn.dataset.id, idx = state.selectedCategories.indexOf(id);
+                if (idx === -1) { state.selectedCategories.push(id); btn.classList.add('selected'); }
+                else { state.selectedCategories.splice(idx, 1); btn.classList.remove('selected'); }
+                updateStartButton(); updateSelectAllButton();
+            });
+        }
+
+        function updateStartButton() {
+            const btn = $('startBtn');
+            const total = state.selectedCategories.reduce((sum, cat) => sum + CATEGORIES.find(c => c.id === cat).count, 0);
+            btn.disabled = state.selectedCategories.length === 0;
+            btn.textContent = total > 0 ? `Inizia Quiz (${state.mode === 'exam' ? '10' : total} domande)` : 'Inizia Quiz';
+        }
+
+        function updateSelectAllButton() { $('selectAllBtn').textContent = state.selectedCategories.length === CATEGORIES.length ? 'Deseleziona' : 'Seleziona tutto'; }
+
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected'); state.mode = btn.dataset.mode; updateStartButton();
+            });
+        });
+
+        $('selectAllBtn').addEventListener('click', () => {
+            const allSelected = state.selectedCategories.length === CATEGORIES.length;
+            document.querySelectorAll('.category-btn').forEach(btn => { allSelected ? btn.classList.remove('selected') : btn.classList.add('selected'); });
+            state.selectedCategories = allSelected ? [] : CATEGORIES.map(c => c.id);
+            updateStartButton(); updateSelectAllButton();
+        });
+
+        $('startBtn').addEventListener('click', startQuiz);
+
+        function startQuiz() {
+            let questions = QUESTIONS.filter(q => state.selectedCategories.includes(q.category));
+            questions = shuffle(questions);
+            if (state.mode === 'exam') questions = questions.slice(0, 10);
+            state.questions = questions; state.currentIndex = 0; state.answers = []; state.correctCount = 0; state.wrongCount = 0; state.showFeedback = false; state.timeLeft = 600;
+            if (state.mode === 'exam') { $('quizStats').classList.add('hidden'); $('timer').classList.remove('hidden'); startTimer(); }
+            else { $('quizStats').classList.remove('hidden'); $('timer').classList.add('hidden'); }
+            showScreen('quiz'); renderQuestion();
+        }
+
+        function startTimer() {
+            clearInterval(state.timerInterval);
+            state.timerInterval = setInterval(() => { state.timeLeft--; updateTimerDisplay(); if (state.timeLeft <= 0) { clearInterval(state.timerInterval); finishQuiz(); } }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const timer = $('timer'), m = Math.floor(state.timeLeft / 60), s = state.timeLeft % 60;
+            timer.textContent = `${m}:${s.toString().padStart(2, '0')}`; timer.classList.toggle('warning', state.timeLeft < 60);
+        }
+
+        function renderQuestion() {
+            const q = state.questions[state.currentIndex], progress = ((state.currentIndex + 1) / state.questions.length) * 100;
+            $('progressFill').style.width = `${progress}%`;
+            $('quizCounter').textContent = `${state.currentIndex + 1} / ${state.questions.length}`;
+            $('correctCount').textContent = `${state.correctCount} ✓`; $('wrongCount').textContent = `${state.wrongCount} ✗`;
+            $('questionCategory').textContent = getCategoryName(q.category); $('questionText').textContent = q.question;
+            const answersList = $('answersList');
+            answersList.innerHTML = q.answers.map((answer, i) => `<button class="answer-btn" data-index="${i}"><span class="answer-letter">${String.fromCharCode(65 + i)}</span>${answer}</button>`).join('');
+            $('feedbackBox').classList.add('hidden'); $('nextBtn').classList.add('hidden'); $('skipBtn').classList.toggle('hidden', state.mode === 'exam');
+            answersList.querySelectorAll('.answer-btn').forEach(btn => { btn.addEventListener('click', () => handleAnswer(parseInt(btn.dataset.index))); });
+        }
+
+        function handleAnswer(index) {
+            if (state.showFeedback) return;
+            const q = state.questions[state.currentIndex], isCorrect = index === q.correct;
+            state.showFeedback = true; state.answers.push({ question: q, userAnswer: index, isCorrect });
+            if (isCorrect) state.correctCount++; else state.wrongCount++;
+            const buttons = $('answersList').querySelectorAll('.answer-btn');
+            buttons.forEach((btn, i) => {
+                btn.disabled = true;
+                if (i === q.correct) { btn.classList.add('correct'); btn.querySelector('.answer-letter').textContent = '✓'; }
+                else if (i === index && !isCorrect) { btn.classList.add('wrong'); btn.querySelector('.answer-letter').textContent = '✗'; }
+            });
+            const feedbackBox = $('feedbackBox');
+            feedbackBox.classList.remove('hidden', 'correct', 'wrong'); feedbackBox.classList.add(isCorrect ? 'correct' : 'wrong');
+            $('feedbackTitle').textContent = isCorrect ? 'Risposta corretta' : 'Risposta errata'; $('feedbackText').textContent = q.explanation;
+            $('correctCount').textContent = `${state.correctCount} ✓`; $('wrongCount').textContent = `${state.wrongCount} ✗`;
+            const nextBtn = $('nextBtn'); nextBtn.classList.remove('hidden');
+            nextBtn.textContent = state.currentIndex < state.questions.length - 1 ? 'Prossima domanda' : 'Vedi risultati';
+            $('skipBtn').classList.add('hidden');
+        }
+
+        $('nextBtn').addEventListener('click', nextQuestion);
+        $('skipBtn').addEventListener('click', () => { state.answers.push({ question: state.questions[state.currentIndex], userAnswer: null, isCorrect: false }); nextQuestion(); });
+
+        function nextQuestion() {
+            state.showFeedback = false;
+            if (state.currentIndex < state.questions.length - 1) { state.currentIndex++; renderQuestion(); }
+            else finishQuiz();
+        }
+
+        function finishQuiz() {
+            clearInterval(state.timerInterval);
+            while (state.answers.length < state.questions.length) state.answers.push({ question: state.questions[state.answers.length], userAnswer: null, isCorrect: false });
+            showResults();
+        }
+
+        function showResults() {
+            const correct = state.answers.filter(a => a.isCorrect).length;
+            const wrong = state.answers.filter(a => !a.isCorrect && a.userAnswer !== null).length;
+            const skipped = state.answers.filter(a => a.userAnswer === null).length;
+            const total = state.answers.length, percentage = Math.round((correct / total) * 100), isPassing = percentage >= 60;
+            const icon = $('resultsIcon'); icon.classList.remove('pass', 'fail'); icon.classList.add(isPassing ? 'pass' : 'fail');
+            $('iconCheck').classList.toggle('hidden', !isPassing); $('iconX').classList.toggle('hidden', isPassing);
+            let title, subtitle;
+            if (percentage === 100) { title = 'Risultato perfetto'; subtitle = 'Sei pronto per l\'esame'; }
+            else if (percentage >= 80) { title = 'Ottimo risultato'; subtitle = 'Continua così'; }
+            else if (percentage >= 60) { title = 'Buon risultato'; subtitle = 'Ancora un po\' di pratica'; }
+            else { title = 'Da migliorare'; subtitle = 'Ripassa gli argomenti'; }
+            $('resultsTitle').textContent = title; $('resultsSubtitle').textContent = subtitle;
+            $('scoreNumber').textContent = `${percentage}%`; $('scoreLabel').textContent = `${correct} risposte corrette su ${total}`;
+            $('finalCorrect').textContent = correct; $('finalWrong').textContent = wrong; $('finalSkipped').textContent = skipped;
+            const reviewBtn = $('reviewBtn'), wrongTotal = wrong + skipped;
+            if (wrongTotal > 0) { reviewBtn.classList.remove('hidden'); reviewBtn.textContent = `Rivedi errori (${wrongTotal})`; }
+            else reviewBtn.classList.add('hidden');
+            showScreen('results');
+        }
+
+        $('reviewBtn').addEventListener('click', () => {
+            const wrong = state.answers.filter(a => !a.isCorrect);
+            $('reviewTitle').textContent = `Domande errate (${wrong.length})`;
+            $('reviewList').innerHTML = wrong.map(item => `<div class="review-item"><div class="review-question">${item.question.question}</div>${item.userAnswer !== null ? `<div class="review-answer user-wrong">✗ ${item.question.answers[item.userAnswer]}</div>` : ''}<div class="review-answer correct-answer">✓ ${item.question.answers[item.question.correct]}</div></div>`).join('');
+            showScreen('review');
+        });
+
+        $('backToResultsBtn').addEventListener('click', () => showScreen('results'));
+        $('backFromReviewBtn').addEventListener('click', () => showScreen('results'));
+        $('newQuizBtn').addEventListener('click', () => showScreen('home'));
+
+        initCategories();
+    </script>
+</body>
+</html>
