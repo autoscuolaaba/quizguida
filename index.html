@@ -82,7 +82,9 @@
             padding: 10px 8px; cursor: pointer; font-family: inherit;
             font-size: 13px; font-weight: 500; color: var(--gray-600); transition: all 0.15s;
         }
-        .mode-btn.selected { background: var(--white); color: var(--gray-900); box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+        .mode-btn.selected { background: var(--gray-800); color: var(--white); font-weight: 600; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .mode-btn.highlight { background: var(--accent-light); color: var(--accent); font-weight: 600; border: 1px solid var(--accent); }
+        .mode-btn.highlight.selected { background: var(--accent); color: var(--white); box-shadow: 0 2px 4px rgba(196, 30, 58, 0.3); }
         .categories-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
         .categories-header .section-title { margin: 0; }
         .select-all-btn { background: none; border: none; color: var(--accent); font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; }
@@ -185,8 +187,8 @@
             <div id="homeScreen" class="card">
                 <div class="section-title">Modalità</div>
                 <div class="mode-toggle">
-                    <button class="mode-btn selected" data-mode="practice">Pratica</button>
-                    <button class="mode-btn" data-mode="exam">Simulazione (10)</button>
+                    <button class="mode-btn" data-mode="practice">Argomenti</button>
+                    <button class="mode-btn highlight" data-mode="full">Quiz Guida</button>
                 </div>
                 <div class="categories-header">
                     <div class="section-title">Argomenti</div>
@@ -352,7 +354,7 @@
 
         CATEGORIES.forEach(cat => { cat.count = QUESTIONS.filter(q => q.category === cat.id).length; });
 
-        let state = { screen: 'home', mode: 'practice', selectedCategories: [], questions: [], currentIndex: 0, answers: [], showFeedback: false, correctCount: 0, wrongCount: 0, timeLeft: 600, timerInterval: null };
+        let state = { screen: 'home', mode: null, selectedCategories: [], questions: [], currentIndex: 0, answers: [], showFeedback: false, correctCount: 0, wrongCount: 0, timeLeft: 600, timerInterval: null };
         const $ = id => document.getElementById(id);
         const screens = { home: $('homeScreen'), quiz: $('quizScreen'), results: $('resultsScreen'), review: $('reviewScreen') };
 
@@ -381,8 +383,16 @@
         function updateStartButton() {
             const btn = $('startBtn');
             const total = state.selectedCategories.reduce((sum, cat) => sum + CATEGORIES.find(c => c.id === cat).count, 0);
-            btn.disabled = state.selectedCategories.length === 0;
-            btn.textContent = total > 0 ? `Inizia Quiz (${state.mode === 'exam' ? '10' : total} domande)` : 'Inizia Quiz';
+            if (state.mode === 'full') {
+                btn.disabled = false;
+                btn.textContent = 'Inizia Quiz Guida (30 domande - 3 min)';
+            } else if (state.mode === 'practice') {
+                btn.disabled = state.selectedCategories.length === 0;
+                btn.textContent = total > 0 ? `Inizia Quiz (${total} domande)` : 'Inizia Quiz';
+            } else {
+                btn.disabled = true;
+                btn.textContent = 'Seleziona una modalità';
+            }
         }
 
         function updateSelectAllButton() { $('selectAllBtn').textContent = state.selectedCategories.length === CATEGORIES.length ? 'Deseleziona' : 'Seleziona tutto'; }
@@ -404,12 +414,23 @@
         $('startBtn').addEventListener('click', startQuiz);
 
         function startQuiz() {
-            let questions = QUESTIONS.filter(q => state.selectedCategories.includes(q.category));
-            questions = shuffle(questions);
-            if (state.mode === 'exam') questions = questions.slice(0, 10);
-            state.questions = questions; state.currentIndex = 0; state.answers = []; state.correctCount = 0; state.wrongCount = 0; state.showFeedback = false; state.timeLeft = 600;
-            if (state.mode === 'exam') { $('quizStats').classList.add('hidden'); $('timer').classList.remove('hidden'); startTimer(); }
-            else { $('quizStats').classList.remove('hidden'); $('timer').classList.add('hidden'); }
+            let questions;
+            if (state.mode === 'full') {
+                questions = shuffle(QUESTIONS).slice(0, 30);
+                state.timeLeft = 180; // 3 minuti
+            } else {
+                questions = QUESTIONS.filter(q => state.selectedCategories.includes(q.category));
+                questions = shuffle(questions);
+            }
+            state.questions = questions; state.currentIndex = 0; state.answers = []; state.correctCount = 0; state.wrongCount = 0; state.showFeedback = false;
+            if (state.mode === 'full') {
+                $('quizStats').classList.remove('hidden');
+                $('timer').classList.remove('hidden');
+                startTimer();
+            } else {
+                $('quizStats').classList.remove('hidden');
+                $('timer').classList.add('hidden');
+            }
             showScreen('quiz'); renderQuestion();
         }
 
@@ -512,6 +533,7 @@
         $('newQuizBtn').addEventListener('click', () => showScreen('home'));
 
         initCategories();
+        updateStartButton();
     </script>
 </body>
 </html>
