@@ -154,8 +154,8 @@
         .review-answer:last-child { margin-bottom: 0; }
         .review-answer.user-wrong { background: var(--error-bg); color: var(--error); }
         .review-answer.correct-answer { background: var(--success-bg); color: var(--success); }
-        .footer { margin-top: 24px; text-align: center; font-size: 12px; color: var(--gray-400); }
-        .footer a { color: var(--gray-500); text-decoration: none; font-weight: 500; }
+        .footer { margin-top: 24px; text-align: center; font-size: 13px; color: var(--gray-500); }
+        .footer a { color: var(--accent); text-decoration: none; font-weight: 600; }
         @media (max-width: 380px) {
             .app { padding: 16px 12px; }
             .card { padding: 16px; }
@@ -266,10 +266,10 @@
             { id: 1, category: 'cofano', question: 'Come si apre il cofano motore?', answers: ['Leva interna + sicura esterna da sbloccare', 'Solo con la chiave dell\'auto', 'Pulsante sul cruscotto'], correct: 0, explanation: 'Il cofano si apre con la leva interna (di solito sotto il cruscotto lato guida), poi va sbloccata la sicura esterna alzando la levetta sotto il cofano.' },
             { id: 2, category: 'cofano', question: 'Come si controlla il livello dell\'olio motore?', answers: ['Astina: estrarre, pulire, reinserire, estrarre e leggere', 'Guardare la spia sul cruscotto', 'Controllare il tappo dell\'olio'], correct: 0, explanation: 'Si estrae l\'astina, si pulisce con un panno, si reinserisce completamente, si estrae di nuovo e si legge il livello che deve essere tra MIN e MAX.' },
             { id: 3, category: 'cofano', question: 'Quando va controllato il livello dell\'olio?', answers: ['A motore freddo e auto in piano', 'A motore caldo dopo aver guidato', 'Non importa, basta che sia spento'], correct: 0, explanation: 'Il controllo va fatto a motore freddo (o dopo almeno 10 minuti di sosta) con l\'auto in piano per avere una lettura corretta.' },
-            { id: 4, category: 'cofano', question: 'Dove si rabbocca l\'olio motore?', answers: ['Dal tappo con il simbolo dell\'olio sul motore', 'Dallo stesso punto dell\'astina', 'Dal serbatoio del liquido freni'], correct: 0, explanation: 'L\'olio si aggiunge dal tappo di rabbocco che ha il simbolo dell\'olio, diverso dal punto dove si trova l\'astina di controllo.' },
+            { id: 4, category: 'cofano', question: 'Dove si rabbocca l\'olio motore?', answers: ['Dal tappo con il simbolo dell\'olio sul motore', 'Dallo stesso punto dell\'astina', 'Dal serbatoio del liquido freni'], correct: 1, explanation: 'In alcune auto l\'olio si rabbocca dallo stesso punto dell\'astina di controllo.' },
             { id: 5, category: 'cofano', question: 'Il livello del liquido di raffreddamento dove deve essere?', answers: ['Tra MIN e MAX, preferibilmente al MAX', 'Basta che sia sopra il MIN', 'Sempre pieno fino all\'orlo'], correct: 0, explanation: 'Il livello deve essere tra MIN e MAX. All\'esame spesso chiedono che arrivi fino al MAX, non basta che sia "dentro il range".' },
             { id: 6, category: 'cofano', question: 'Quando si controlla il liquido di raffreddamento?', answers: ['Sempre a motore freddo', 'Solo a motore caldo', 'Indifferente'], correct: 0, explanation: 'Va controllato SEMPRE a motore freddo. A motore caldo il liquido è in pressione e aprire il tappo può causare ustioni.' },
-            { id: 7, category: 'cofano', question: 'Dove si trova il serbatoio del liquido freni?', answers: ['Sopra il cilindro maestro, vicino al parabrezza', 'Vicino al radiatore', 'Nel bagagliaio'], correct: 0, explanation: 'Il serbatoio del liquido freni è posizionato sopra il cilindro maestro, di solito nella parte posteriore del vano motore vicino al parabrezza.' },
+            { id: 7, category: 'cofano', question: 'Dove si trova il serbatoio del liquido freni?', answers: ['Alla destra in alto vicino alla batteria', 'Vicino al radiatore', 'Nel bagagliaio'], correct: 0, explanation: 'Il serbatoio del liquido freni si trova alla destra in alto, vicino alla batteria.' },
             { id: 8, category: 'cofano', question: 'Il liquido lavavetri fino a che livello può essere riempito?', answers: ['Fino all\'orlo del serbatoio', 'Solo fino alla tacca MAX', 'A metà serbatoio'], correct: 0, explanation: 'A differenza degli altri liquidi, il lavavetri può essere riempito fino all\'orlo senza problemi.' },
             
             // PNEUMATICI (8 domande)
@@ -305,10 +305,10 @@
             // POSIZIONE DI GUIDA (6 domande)
             { id: 33, category: 'posizione', question: 'Come si regola correttamente il sedile?', answers: ['Distanza pedali: gamba leggermente flessa a frizione premuta', 'Gambe completamente tese', 'Più vicino possibile al volante'], correct: 0, explanation: 'La distanza giusta permette di premere a fondo la frizione mantenendo la gamba leggermente flessa, non completamente tesa.' },
             { id: 34, category: 'posizione', question: 'Come vanno regolati gli specchietti retrovisori esterni?', answers: ['1/3 veicolo visibile, 2/3 strada', '2/3 veicolo, 1/3 strada', 'Solo la strada, niente veicolo'], correct: 0, explanation: 'Negli specchietti esterni deve essere visibile circa 1/3 della fiancata del veicolo e 2/3 della strada dietro.' },
-            { id: 35, category: 'posizione', question: 'A che altezza va regolato il volante?', answers: ['Sguardo a metà tra parasole abbassato e cruscotto', 'Il più alto possibile', 'Il più basso possibile'], correct: 0, explanation: 'Il volante va regolato in modo che lo sguardo passi a metà tra l\'aletta parasole completamente aperta e il bordo superiore del cruscotto.' },
+            { id: 35, category: 'posizione', question: 'A che altezza va regolato il volante?', answers: ['Sguardo a metà tra aletta parasole e razza superiore del volante', 'Il più alto possibile', 'Il più basso possibile'], correct: 0, explanation: 'Il volante va regolato in modo che lo sguardo passi a metà tra l\'aletta parasole e la razza superiore del volante.' },
             { id: 36, category: 'posizione', question: 'Qual è la sequenza corretta di regolazione prima di partire?', answers: ['Sedile → specchietti → cintura → controllo cambio/freno', 'Cintura → sedile → specchietti', 'Specchietti → sedile → cintura'], correct: 0, explanation: 'Prima si regola il sedile (base per tutto), poi gli specchietti, poi si allaccia la cintura e si verifica cambio in folle e freno a mano.' },
             { id: 37, category: 'posizione', question: 'Come deve essere regolato il poggiatesta?', answers: ['Centro del poggiatesta all\'altezza degli occhi', 'Il più in alto possibile', 'All\'altezza del collo'], correct: 0, explanation: 'Il centro del poggiatesta deve essere circa all\'altezza degli occhi per proteggere efficacemente dal colpo di frusta.' },
-            { id: 38, category: 'posizione', question: 'Cosa si controlla dopo aver regolato tutto e prima di avviare?', answers: ['Spie cruscotto con chiave in MAR', 'Subito il motore', 'I fari'], correct: 0, explanation: 'Con la chiave in MAR (senza avviare) si controllano le spie del cruscotto. Tutte le spie rosse devono spegnersi dopo l\'avviamento.' },
+            { id: 38, category: 'posizione', question: 'Chi deve avere la cintura allacciata prima di partire?', answers: ['Tutti i passeggeri tranne l\'istruttore (esente)', 'Solo il conducente', 'Tutti senza eccezioni'], correct: 0, explanation: 'Tutti i passeggeri devono avere la cintura allacciata. L\'istruttore con doppi comandi è esente per poter intervenire rapidamente.' },
             
             // SICUREZZA E DOTAZIONI (8 domande)
             { id: 39, category: 'sicurezza', question: 'Dove DEVE essere tenuto il giubbotto catarifrangente?', answers: ['Nell\'abitacolo, a portata di mano', 'Nel bagagliaio', 'Sotto il sedile posteriore'], correct: 0, explanation: 'Il giubbotto DEVE essere nell\'abitacolo (non nel bagagliaio) per poterlo indossare PRIMA di scendere dall\'auto in caso di emergenza.' },
@@ -321,18 +321,18 @@
             { id: 46, category: 'sicurezza', question: 'Se l\'auto non ha ruota di scorta, cosa deve avere?', answers: ['Kit di gonfiaggio pneumatici', 'Due ruote anteriori in più', 'Niente, è opzionale'], correct: 0, explanation: 'Se non c\'è la ruota di scorta, l\'auto deve avere il kit di gonfiaggio (bomboletta + compressore) per riparazioni temporanee.' },
             
             // DOCUMENTI (6 domande)
-            { id: 47, category: 'documenti', question: 'Quali documenti servono per circolare?', answers: ['Patente, carta di circolazione, assicurazione', 'Solo la patente', 'Patente e carta d\'identità'], correct: 0, explanation: 'Per circolare servono: patente di guida, carta di circolazione (libretto) e certificato di assicurazione valido.' },
-            { id: 48, category: 'documenti', question: 'Dove si vede se la revisione è in regola?', answers: ['Nella carta di circolazione (o tagliando sul parabrezza)', 'Solo dal meccanico', 'Sul cruscotto'], correct: 0, explanation: 'La data dell\'ultima revisione e la scadenza si trovano sulla carta di circolazione. Può esserci anche un tagliando sul parabrezza.' },
-            { id: 49, category: 'documenti', question: 'Che differenza c\'è tra tagliando e revisione?', answers: ['Tagliando: manutenzione. Revisione: controllo obbligatorio di legge', 'Sono la stessa cosa', 'Il tagliando è obbligatorio, la revisione no'], correct: 0, explanation: 'Il tagliando è la manutenzione programmata dal costruttore. La revisione è il controllo obbligatorio di legge per verificare sicurezza e emissioni.' },
-            { id: 50, category: 'documenti', question: 'Dove trovi quante persone può trasportare il veicolo?', answers: ['Nella carta di circolazione', 'Sul parabrezza', 'Sul volante'], correct: 0, explanation: 'Il numero massimo di persone trasportabili è indicato nella carta di circolazione del veicolo.' },
-            { id: 51, category: 'documenti', question: 'Un neopatentato può guidare qualsiasi auto?', answers: ['No, ci sono limiti di potenza per i primi 3 anni', 'Sì, con qualsiasi patente B', 'Solo auto diesel'], correct: 0, explanation: 'I neopatentati per i primi 3 anni non possono guidare auto con rapporto potenza/peso superiore a 55 kW/t e comunque non oltre 70 kW (95 CV).' },
-            { id: 52, category: 'documenti', question: 'Dove verifichi se l\'auto dell\'esame è guidabile da un neopatentato?', answers: ['Nella carta di circolazione (potenza kW)', 'Chiedendo all\'istruttore', 'Dal colore della targa'], correct: 0, explanation: 'Sulla carta di circolazione è indicata la potenza in kW. Per i neopatentati il limite è 70 kW (95 CV) e rapporto potenza/peso max 55 kW/t.' },
+            { id: 47, category: 'documenti', question: 'Quali documenti servono per circolare?', answers: ['Patente in corso di validità, carta di circolazione e certificato di assicurazione', 'Solo la patente', 'Patente e carta d\'identità'], correct: 0, explanation: 'Per circolare servono: patente in corso di validità, carta di circolazione e certificato di assicurazione.' },
+            { id: 48, category: 'documenti', question: 'Dove si vede se la revisione è in regola?', answers: ['Nella carta di circolazione', 'Solo dal meccanico', 'Sul cruscotto'], correct: 0, explanation: 'La data dell\'ultima revisione e la scadenza si trovano sulla carta di circolazione del veicolo.' },
+            { id: 49, category: 'documenti', question: 'Che differenza c\'è tra tagliando e revisione?', answers: ['Tagliando: manutenzione. Revisione: controllo obbligatorio di legge', 'Sono la stessa cosa', 'Il tagliando è obbligatorio, la revisione no'], correct: 0, explanation: 'Il tagliando è la manutenzione programmata dal costruttore. La revisione è il controllo obbligatorio di legge: la prima dopo 4 anni dall\'immatricolazione, poi ogni 2 anni.' },
+            { id: 50, category: 'documenti', question: 'Dove trovi quante persone può trasportare il veicolo?', answers: ['Nella carta di circolazione (voce S1)', 'Sul parabrezza', 'Sul volante'], correct: 0, explanation: 'Il numero massimo di persone trasportabili è indicato nella carta di circolazione alla voce S1.' },
+            { id: 51, category: 'documenti', question: 'Un neopatentato può guidare qualsiasi auto?', answers: ['No, ci sono limiti di potenza per i primi 3 anni', 'Sì, con qualsiasi patente B', 'Solo auto diesel'], correct: 0, explanation: 'I neopatentati per i primi 3 anni non possono guidare auto con potenza superiore a 105 kW (P2) e rapporto potenza/tara superiore a 75 kW/t.' },
+            { id: 52, category: 'documenti', question: 'Dove verifichi se l\'auto dell\'esame è guidabile da un neopatentato?', answers: ['Nella carta di circolazione (potenza kW)', 'Chiedendo all\'istruttore', 'Dal colore della targa'], correct: 0, explanation: 'Sulla carta di circolazione è indicata la potenza P2 in kW. Per i neopatentati il limite è 105 kW e rapporto potenza/tara max 75 kW/t.' },
             
             // EMERGENZE (8 domande)
             { id: 53, category: 'emergenze', question: 'Qual è la prima cosa da fare in caso di foratura o guasto?', answers: ['Accendere le 4 frecce', 'Scendere subito dall\'auto', 'Chiamare il soccorso'], correct: 0, explanation: 'La prima cosa è sempre accendere le luci di emergenza (4 frecce) per segnalare agli altri veicoli.' },
             { id: 54, category: 'emergenze', question: 'Qual è la procedura corretta in caso di guasto fuori città?', answers: ['4 frecce → giubbotto → triangolo → freno a mano → marcia', 'Scendere e chiamare aiuto', 'Aspettare in auto'], correct: 0, explanation: 'Procedura: 1) Accendere 4 frecce, 2) Indossare giubbotto PRIMA di scendere, 3) Posizionare triangolo a 50m, 4) Freno a mano, 5) Marcia inserita.' },
             { id: 55, category: 'emergenze', question: 'In caso di sosta forzata, che marcia va lasciata inserita?', answers: ['Prima in piano/salita, retromarcia in discesa', 'Sempre in folle', 'Sempre la prima'], correct: 0, explanation: 'In piano o salita si lascia la prima marcia. In discesa si lascia la retromarcia. Questo impedisce al veicolo di muoversi.' },
-            { id: 56, category: 'emergenze', question: 'Dove devono andare i passeggeri in caso di guasto in autostrada?', answers: ['Oltre il guard-rail, lontano dalla carreggiata', 'Restare in auto', 'Dietro il triangolo'], correct: 0, explanation: 'I passeggeri devono scendere dal lato destro e posizionarsi oltre il guard-rail, il più lontano possibile dalla carreggiata.' },
+            { id: 56, category: 'emergenze', question: 'Dove devono andare i passeggeri in caso di guasto in autostrada?', answers: ['Nella corsia di emergenza o piazzola di sosta', 'Restare in auto', 'Dietro il triangolo'], correct: 0, explanation: 'I passeggeri devono stare nella corsia di emergenza e se possibile ripararsi sulla piazzola di sosta esterna alla corsia di emergenza.' },
             { id: 57, category: 'emergenze', question: 'A che distanza va messo il triangolo in autostrada?', answers: ['Almeno 100 metri dietro il veicolo', '50 metri', '20 metri'], correct: 0, explanation: 'In autostrada il triangolo va posizionato ad almeno 100 metri dietro il veicolo (il doppio rispetto alle altre strade).' },
             { id: 58, category: 'emergenze', question: 'Cosa fare se si accende la spia rossa dell\'olio durante la marcia?', answers: ['Fermarsi immediatamente e spegnere il motore', 'Continuare fino al distributore più vicino', 'Controllare alla prossima sosta'], correct: 0, explanation: 'La spia rossa dell\'olio indica pressione insufficiente: bisogna fermarsi SUBITO e spegnere il motore. Continuare può causare danni gravissimi.' },
             { id: 59, category: 'emergenze', question: 'Cosa fare se si accende la spia rossa della temperatura?', answers: ['Fermarsi, spegnere e lasciar raffreddare', 'Accendere il riscaldamento al massimo', 'Aggiungere subito acqua'], correct: 0, explanation: 'Con la spia temperatura accesa: fermarsi immediatamente, spegnere il motore, attendere che si raffreddi. MAI aprire il tappo del radiatore a caldo.' },
@@ -356,7 +356,13 @@
         const $ = id => document.getElementById(id);
         const screens = { home: $('homeScreen'), quiz: $('quizScreen'), results: $('resultsScreen'), review: $('reviewScreen') };
 
-        function shuffle(array) { const arr = [...array]; for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; } return arr; }
+        function shuffle(array) {
+            // Crea copia e mescola con sort randomico
+            return [...array]
+                .map(value => ({ value, sort: Math.random() }))
+                .sort((a, b) => a.sort - b.sort)
+                .map(({ value }) => value);
+        }
         function showScreen(name) { Object.values(screens).forEach(s => s.classList.add('hidden')); screens[name].classList.remove('hidden'); state.screen = name; }
         function getCategoryName(id) { return CATEGORIES.find(c => c.id === id)?.name || id; }
 
@@ -423,21 +429,30 @@
             $('quizCounter').textContent = `${state.currentIndex + 1} / ${state.questions.length}`;
             $('correctCount').textContent = `${state.correctCount} ✓`; $('wrongCount').textContent = `${state.wrongCount} ✗`;
             $('questionCategory').textContent = getCategoryName(q.category); $('questionText').textContent = q.question;
+
+            // Mescola le risposte mantenendo traccia di quale è corretta
+            const indices = [0, 1, 2];
+            const shuffledIndices = shuffle(indices);
+            const shuffledAnswers = shuffledIndices.map(i => ({ text: q.answers[i], originalIndex: i }));
+            q.shuffledCorrect = shuffledAnswers.findIndex(a => a.originalIndex === q.correct);
+
             const answersList = $('answersList');
-            answersList.innerHTML = q.answers.map((answer, i) => `<button class="answer-btn" data-index="${i}"><span class="answer-letter">${String.fromCharCode(65 + i)}</span>${answer}</button>`).join('');
+            answersList.innerHTML = shuffledAnswers.map((answer, i) => `<button class="answer-btn" data-index="${i}" data-original="${answer.originalIndex}"><span class="answer-letter">${String.fromCharCode(65 + i)}</span>${answer.text}</button>`).join('');
             $('feedbackBox').classList.add('hidden'); $('nextBtn').classList.add('hidden'); $('skipBtn').classList.toggle('hidden', state.mode === 'exam');
             answersList.querySelectorAll('.answer-btn').forEach(btn => { btn.addEventListener('click', () => handleAnswer(parseInt(btn.dataset.index))); });
         }
 
         function handleAnswer(index) {
             if (state.showFeedback) return;
-            const q = state.questions[state.currentIndex], isCorrect = index === q.correct;
+            const q = state.questions[state.currentIndex];
+            const correctIndex = q.shuffledCorrect !== undefined ? q.shuffledCorrect : q.correct;
+            const isCorrect = index === correctIndex;
             state.showFeedback = true; state.answers.push({ question: q, userAnswer: index, isCorrect });
             if (isCorrect) state.correctCount++; else state.wrongCount++;
             const buttons = $('answersList').querySelectorAll('.answer-btn');
             buttons.forEach((btn, i) => {
                 btn.disabled = true;
-                if (i === q.correct) { btn.classList.add('correct'); btn.querySelector('.answer-letter').textContent = '✓'; }
+                if (i === correctIndex) { btn.classList.add('correct'); btn.querySelector('.answer-letter').textContent = '✓'; }
                 else if (i === index && !isCorrect) { btn.classList.add('wrong'); btn.querySelector('.answer-letter').textContent = '✗'; }
             });
             const feedbackBox = $('feedbackBox');
