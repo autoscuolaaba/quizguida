@@ -382,7 +382,7 @@
             const total = state.selectedCategories.reduce((sum, cat) => sum + CATEGORIES.find(c => c.id === cat).count, 0);
             if (state.mode === 'full') {
                 btn.disabled = false;
-                btn.textContent = 'Inizia Quiz Guida (30 domande - 3 min)';
+                btn.textContent = 'Inizia Quiz Guida (30 domande - 6 min)';
             } else if (state.mode === 'practice') {
                 btn.disabled = state.selectedCategories.length === 0;
                 btn.textContent = total > 0 ? `Inizia Quiz (${total} domande)` : 'Inizia Quiz';
